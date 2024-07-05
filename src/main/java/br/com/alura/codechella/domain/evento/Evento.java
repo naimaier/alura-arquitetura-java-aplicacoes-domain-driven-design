@@ -15,6 +15,10 @@ public class Evento {
     private LocalDateTime data;
     private List<TipoIngresso> tipoIngressos = new ArrayList<>();
 
+    private Evento() {
+        // Construtor privado para garantir a construção apenas através do Builder
+    }
+
     public Evento(Categoria categoria, String descricao, Endereco endereco, LocalDateTime data) {
         this.categoria = categoria;
         this.descricao = descricao;
@@ -22,6 +26,31 @@ public class Evento {
         this.data = data;
         
         gerarIdentificadorUnico();
+    }
+
+    public static class Builder {
+        private Evento evento;
+
+        public Builder criar(Categoria categoria, String descricao) {
+            evento = new Evento();
+            evento.categoria = categoria;
+            evento.descricao = descricao;
+            return this;
+        }
+
+        public Builder comData(LocalDateTime data) {
+            evento.data = data;
+            return this;
+        }
+
+        public Builder comTiposDeIngresso(List<TipoIngresso> tiposIngresso) {
+            evento.tipoIngressos = tiposIngresso;
+            return this;
+        }
+
+        public Evento build() {
+            return evento;
+        }
     }
 
     private void gerarIdentificadorUnico() {
